@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "set PORT=6000 && node openAI.js"
+    "start": "export PORT=6000 && node openAI.js"
   },
   "dependencies": {
     "express": "^4.18.2",
