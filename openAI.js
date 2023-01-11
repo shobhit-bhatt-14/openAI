@@ -32,15 +32,11 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("OpenAI API live");
+app.get("check", (req, res) => {
+  res.send("OpenAI API is active");
 });
 
-app.get("/check", (req, res) => {
-  res.send("OpenAI check");
-});
-
-app.post("/process", async (req, res) => {
+app.post("process", async (req, res) => {
   try {
     const { text } = req.body;
 
