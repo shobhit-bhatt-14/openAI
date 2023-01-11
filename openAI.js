@@ -32,11 +32,11 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 
-app.get("check", (req, res) => {
+app.get("/check", (req, res) => {
   res.send("OpenAI API is active");
 });
 
-app.post("process", async (req, res) => {
+app.post("/process", async (req, res) => {
   try {
     const { text } = req.body;
 
