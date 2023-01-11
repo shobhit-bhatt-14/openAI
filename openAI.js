@@ -28,9 +28,8 @@ async function getEntities(text) {
     .catch((err) => console.log(err));
 }
 
+const PORT = process.env.PORT || 3000;
 const app = express();
-const PORT = 3000;
-
 app.use(express.json());
 
 app.post("/process", async (req, res) => {
