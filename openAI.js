@@ -9,7 +9,7 @@ const openai = new OpenAIApi(configuration);
 
 async function getEntities(text) {
   const prompt =
-    "From the text below, extract the following entities in the following format:\nCompanies: <comma-separated list of companies mentioned>\nCharacters: <comma-separated list of characters mentioned>\nCategory: <comma-separated list of toys category mentioned>\nText: ";
+    "From the text below, extract the following entities in the following format:\nCompanies: <comma-separated list of companies mentioned>\nCharacters: <comma-separated list of characters mentioned>Categories: <comma-separated list of toy category or type mentioned>\nText: ";
 
   const input = prompt + text;
 
@@ -33,27 +33,28 @@ const PORT = 3000;
 
 app.use(express.json());
 
-app.get("/", async (req, res) => {
-  // let output =
-  //   "\n\nCompanies: Kids Preferred \nCharacters: Lilo, Stitch \nToy Category: Activity Toy";
-
+app.post("/process", async (req, res) => {
   try {
-    let output = await getEntities(
-      ` KIDS PREFERRED Disney Baby Lilo & Stitch - Stitch On The Go Activity Toy 12 Inches, Blue (KP79988) `
-    );
+    const { text } = req.body;
 
-    output = output.trim().split("\n");
+    if (text) {
+      let output = await getEntities(text);
 
-    let product = {};
+      output = output.trim().split("\n");
 
-    for (let ele of output) {
-      let key = ele.split(":")[0].trim();
-      let val = ele.split(":")[1].trim();
+      let product = {};
 
-      product[key] = val.split(",").map((v) => v.trim());
+      for (let ele of output) {
+        let key = ele.split(":")[0].trim();
+        let val = ele.split(":")[1].trim();
+
+        product[key] = val.split(",").map((v) => v.trim());
+      }
+
+      res.json(product);
+    } else {
+      throw { message: "No text provided" };
     }
-
-    res.json(product);
   } catch (error) {
     res.json(error);
   }
