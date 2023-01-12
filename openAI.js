@@ -49,10 +49,12 @@ app.post("/process", async (req, res) => {
       let product = {};
 
       for (let ele of output) {
-        let key = ele.split(":")[0].trim();
-        let val = ele.split(":")[1].trim();
+        if (ele.includes(":")) {
+          let key = ele.split(":")[0].trim();
+          let val = ele.split(":")[1].trim();
 
-        product[key] = val.split(",").map((v) => v.trim());
+          product[key] = val.split(",").map((v) => v.trim());
+        }
       }
 
       res.json(product);
